@@ -14,13 +14,9 @@
 (define-constant normal-transfer-period-len u100)
 (define-constant normal-penalty-period-len u100)
 
-;; @name Is protocol caller test (is not at first)
-(define-public (test-is-protocol-caller)
-	(let ((is-protocol-caller
-			(contract-call? .sbtc-stacking-pool is-protocol-caller)))
-		(asserts! (is-err is-protocol-caller) (err "Should not be a protocol caller at first"))
-		(ok true)
-	)
+;; @name Not protocol caller (at first)
+(define-public (test-not-protocol-caller)
+	(ok (unwrap-err! (contract-call? .sbtc-stacking-pool is-protocol-caller) (err "Should not be a protocol caller at first")))
 )
 
 ;; @name Get current cycle stacker/signer pool, should return none
