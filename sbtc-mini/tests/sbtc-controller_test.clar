@@ -22,8 +22,5 @@
 ;; @name Non-protocol principals cannot trigger upgrade
 ;; @no-prepare
 (define-public (test-upgrade-non-prototcol-principal)
-	(match (contract-call? .sbtc-controller upgrade (list {contract: test-contract-principal, enabled: true}))
-		success (err "Should have failed")
-		error (ok true)
-	)
+	(ok (unwrap-err-panic (contract-call? .sbtc-controller upgrade (list {contract: test-contract-principal, enabled: true}))))
 )
