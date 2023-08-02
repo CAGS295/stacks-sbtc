@@ -216,11 +216,11 @@
 ;; @no-prepare
 (define-public (test-protocol-mint-many-external)
 	(ok
-		(asserts! (is-eq 
-			(contract-call? .sbtc-token protocol-mint-many (list {amount: u10000000, recipient: wallet-1} {amount: u10000000, recipient: wallet-2}))
-			err-unauthorised
-			)
-		(err "Should have failed"))
+		(asserts! 
+			(is-eq 
+				(contract-call? .sbtc-token protocol-mint-many (list {amount: u10000000, recipient: wallet-1} {amount: u10000000, recipient: wallet-2}))
+				err-unauthorised) (err "Should have failed")
+		)
 	)
 )
 
