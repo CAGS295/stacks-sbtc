@@ -91,15 +91,11 @@
 (define-public (test-extract-recipient-and-spending-pubkey)
 	(let (
 			(script 0x183c001a7321b74e2b6a7e949e6c4ad313035b16650950170075200046422d30ec92c568e21be4b9579cfed8e71ba0702122b014755ae0e23e3563ac)
-			(expected
-				{
-				input-spending-pubkey: 0x0046422d30ec92c568e21be4b9579cfed8e71ba0702122b014755ae0e23e3563,
-				recipient: 'ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5
-				}
-			)
-			(result (unwrap! (contract-call? .sbtc-peg-in-processor verify-extract-unlock-script script) (err {expected: none, actual: none, msg: "Verification or extraction failed"})))
+			(expected (ok { input-spending-pubkey: 0x0046422d30ec92c568e21be4b9579cfed8e71ba0702122b014755ae0e23e3563,
+				recipient: 'ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 }))
+			(actual (contract-call? .sbtc-peg-in-processor verify-extract-unlock-script script))
 		)
-		(asserts! (is-eq result expected) (err {expected: (some expected), actual: (some result), msg: "Result mismatch"}))
+		(asserts! (is-eq actual expected) (err {expected: expected, actual: actual, msg: "Result mismatch"}))
 		(ok true)
 	)
 )
