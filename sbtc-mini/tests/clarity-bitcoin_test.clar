@@ -234,6 +234,38 @@
   )
 )
 
+;; @parse u32 varints
+(define-public (test-parse-varint-u32)
+  (let (
+      (buffer 0xfe00000001) 
+      (parsed (unwrap-panic (contract-call? .clarity-bitcoin read-varint {txbuff: buffer, index: u0} )))
+      (res (get varint parsed))
+      (index (get index (get ctx parsed)))
+      (expected-int u16777216)
+      (expected-index u5)
+    )
+    (asserts! (is-eq res expected-int) (err {actual: res, expected:expected-int}))
+    (asserts! (is-eq index expected-index ) (err {actual: index, expected:expected-index}))
+    (ok false)
+  )
+)
+
+ ;;@parse u64 varints
+(define-public (test-parse-varint-u64)
+  (let (
+      (buffer 0xff0000000000000001) 
+      (parsed (unwrap-panic (contract-call? .clarity-bitcoin read-varint {txbuff: buffer, index: u0} )))
+      (res (get varint parsed))
+      (index (get index (get ctx parsed)))
+      (expected u72057594037927936)
+      (expected-index u9)
+    )
+    (asserts! (is-eq res expected) (err {actual: res, expected:expected}))
+    (asserts! (is-eq index expected-index ) (err {actual: index, expected:expected-index}))
+    (ok false)
+  )
+)
+
 (define-constant ERR-OUT-OF-BOUNDS u1)
 (define-constant ERR-TOO-MANY-TXINS u2)
 (define-constant ERR-TOO-MANY-TXOUTS u3)
