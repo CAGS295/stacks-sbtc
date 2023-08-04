@@ -158,14 +158,11 @@
                       txins: (unwrap!
                               (as-max-len?
                                   (append (get txins state)
-                                      {   outpoint: {
-                                                     hash: (get hashslice parsed-hash),
+                                      {   outpoint: { hash: (get hashslice parsed-hash),
                                                      index: (get uint32 parsed-index) },
                                           scriptSig: (unwrap! (as-max-len? (get varslice parsed-scriptSig) u256) (err ERR-VARSLICE-TOO-LONG)),
-                                          sequence: (get uint32 parsed-sequence)})
-                               u8)
-                              (err ERR-TOO-MANY-TXINS))}))
-                (ok state))))
+                                          sequence: (get uint32 parsed-sequence)}) u8)
+                              (err ERR-TOO-MANY-TXINS))})) (ok state))))
 
 ;; Read a transaction's inputs.
 ;; Returns (ok { txins: (list { ... }), remaining: uint, ctx: { txbuff: (buff 4096), index: uint } }) on success, and updates the index in ctx to point to the start of the tx outputs.
@@ -199,8 +196,7 @@
                       (as-max-len?
                           (append (get txouts state)
                               {   value: (get uint64 parsed-value),
-                                  scriptPubKey: (unwrap! (as-max-len? (get varslice parsed-script) u128) (err ERR-VARSLICE-TOO-LONG))})
-                      u8)
+                                  scriptPubKey: (unwrap! (as-max-len? (get varslice parsed-script) u128) (err ERR-VARSLICE-TOO-LONG))}) u8)
                       (err ERR-TOO-MANY-TXOUTS))})))
 
 ;; Read all transaction outputs in a transaction.  Update the index to point to the first byte after the outputs, if all goes well.
@@ -228,8 +224,7 @@
             items: (unwrap!
                       (as-max-len?
                           (append (get items state) (unwrap! (as-max-len? (get varslice parsed-item) u128) (err ERR-VARSLICE-TOO-LONG)))
-                      u8)
-                      (err ERR-TOO-MANY-WITNESSES))})))
+                      u8) (err ERR-TOO-MANY-WITNESSES))})))
 
 ;; Read the next witness data, and update the index in ctx to point to the next witness.
 (define-read-only (read-next-witness (ignored bool)
